@@ -1,7 +1,7 @@
+import * as Sentry from '@sentry/react';
 import { types } from './types';
 import text from '../../text.json';
 import { ValidationError } from '../../networking/models/Errors';
-import * as Sentry from '@sentry/react';
 
 const errorList = [
     {
@@ -139,24 +139,24 @@ const clearErrors = () => dispatch => {
     });
 };
 
-const setCustomErrors = (error) => dispatch => {
+const setCustomErrors = error => dispatch => {
     dispatch({
         type: types.SET_ERRORS,
         payload: error,
     });
 };
 
-const setConfirmModal = (error) => dispatch => {
+const setConfirmModal = error => dispatch => {
     dispatch({
         type: types.SET_CONFIRM_MODAL,
         payload: error,
     });
 };
 
-const checkErrors = (error) => dispatch => {
+const checkErrors = error => dispatch => {
     console.log(error, '--error');
     if (error instanceof ValidationError) {
-        let errorText = {
+        const errorText = {
             text: text.ADDRESS_ERROR_TEXT,
             tip: text.ADDRESS_ERROR_TIP,
             header: text.ADDRESS_ERROR_HEADER,

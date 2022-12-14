@@ -1,8 +1,8 @@
+import * as Sentry from '@sentry/react';
+import { utils } from '@citadeldao/apps-sdk';
 import { getRequest } from '../requests/getRequest';
 import { ImplementationError } from './Errors';
 import { store } from '../../store/store';
-import * as Sentry from '@sentry/react';
-import { utils } from '@citadeldao/apps-sdk';
 
 const walletRequest = getRequest('wallet');
 const transactionsRequest = getRequest('transactions');

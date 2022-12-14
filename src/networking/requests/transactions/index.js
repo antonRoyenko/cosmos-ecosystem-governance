@@ -1,7 +1,6 @@
 import { utils } from '@citadeldao/apps-sdk';
 
-const getTransactions = (data) => {
-    return new utils.Request('get',
+const getTransactions = data => new utils.Request('get',
         `${process.env.REACT_APP_BACKEND_URL}/transactions/${data.net}/${data.address}`,
         {
           params: {
@@ -9,7 +8,6 @@ const getTransactions = (data) => {
           },
         },
     );
-};
 
 export const transactions = {
     getTransactions,

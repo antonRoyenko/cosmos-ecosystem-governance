@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
 import { store } from "../../store/store";
 import { types } from '../../store/actions/types';
+
 export class SocketManager {
     // contains a socket connection
     static socket;
@@ -12,9 +13,9 @@ export class SocketManager {
                 transports: ['websocket'],
                 upgrade: false,
                 query: {
-                    token: auth_token
+                    token: auth_token,
                 },
-                reconnection: true
+                reconnection: true,
             });
             this.startListeners();
         } catch (err) {
@@ -38,13 +39,13 @@ export class SocketManager {
 				console.log('socket is connected')
 			})
 			
-			this.socket.on('message-from-front',async(data)=>{
+			this.socket.on('message-from-front',async data=>{
 				console.log('message-from-front in app', data)
 				if(data.type === 'view-scrt-balance'){
 					// update secret token balance
 				}
 			})
-			this.socket.on('address-balance-updated-app',async(data)=>{
+			this.socket.on('address-balance-updated-app',async data=>{
 				console.log('address-balance-updated-app', data)
 				const { wallets } = store.getState().wallet
 				if(data.address && data.balance && data.net){
@@ -59,11 +60,11 @@ export class SocketManager {
 					  });
 				}	
 			})
-			this.socket.on('mempool-add-tx-app', (data) => {
+			this.socket.on('mempool-add-tx-app', data => {
 				console.log('mempool-add-tx-app', data)
 			})
 			
-			this.socket.on('mempool-remove-tx-app',async (data) => {
+			this.socket.on('mempool-remove-tx-app',async data => {
 				console.log('mempool-remove-tx-app', data)
 			})
 		}catch (err) {

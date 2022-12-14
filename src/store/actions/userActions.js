@@ -1,19 +1,19 @@
+import { utils } from '@citadeldao/apps-sdk';
 import { types } from './types';
 import { store } from '../store';
 import { getRequest } from '../../networking/requests/getRequest';
-import { utils } from '@citadeldao/apps-sdk';
 
 const requestManager = new utils.RequestManager();
 const userRequest = getRequest('user');
 
-const setAuthToken = (token) => ({
+const setAuthToken = token => ({
     type: types.SET_OPENED_TRANSACTION,
     payload: token,
 });
 
-const loadSocketToken = () => (dispatch) => {
+const loadSocketToken = () => dispatch => {
     try {
-        requestManager.send(userRequest.getSocketToken()).then((res) => {
+        requestManager.send(userRequest.getSocketToken()).then(res => {
             dispatch({
                 type: types.SET_SOCKET_TOKEN,
                 payload: res.data?.data,
@@ -25,7 +25,7 @@ const loadSocketToken = () => (dispatch) => {
 const loadUserConfig = async () => {
     const { auth_token } = store.getState().user;
     try {
-        let result = await requestManager.send(userRequest.getUserConfig(auth_token));
+        const result = await requestManager.send(userRequest.getUserConfig(auth_token));
         console.log(result, '-loadUserConfig');
         store.dispatch({
             type: types.SET_USER_CONFIG,

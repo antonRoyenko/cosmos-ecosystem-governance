@@ -2,12 +2,12 @@ import { types } from './types';
 import { walletActions, errorActions } from '.';
 import { store } from '../store';
 
-const setOpenedTransaction = (flag) => ({
+const setOpenedTransaction = flag => ({
     type: types.SET_OPENED_TRANSACTION,
     payload: flag,
 });
 
-const loadTransactions = () => async (dispatch) => {
+const loadTransactions = () => async dispatch => {
     dispatch({
         type: types.SET_TRANSACTIONS_LOADED,
         payload: false,
@@ -16,7 +16,7 @@ const loadTransactions = () => async (dispatch) => {
         type: types.SET_TRANSACTIONS_LIST,
         payload: [],
     });
-    const activeWallet = store.getState().wallet.activeWallet;
+    const {activeWallet} = store.getState().wallet;
     if (activeWallet) {
         const wallet = walletActions.getWalletConstructor(activeWallet);
         wallet.getTransactions().then(response => {

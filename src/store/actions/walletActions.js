@@ -1,3 +1,4 @@
+import { utils } from '@citadeldao/apps-sdk';
 import { types } from './types';
 import { WalletList } from '../../networking/models/WalletList';
 import { ValidationError } from '../../networking/models/Errors';
@@ -6,7 +7,6 @@ import { getRequest } from '../../networking/requests/getRequest';
 import { store } from '../store';
 import models from '../../networking/models';
 import Wallet from '../../networking/models/Wallet';
-import { utils } from '@citadeldao/apps-sdk';
 
 const getWalletConstructor = (address) => {
     try {
@@ -20,13 +20,13 @@ const getWalletConstructor = (address) => {
 
         return new Wallet(currentWallet);
     } catch {
-        new Error('Wallet doesn\'t exists ');
+        new Error("Wallet doesn't exists ");
     }
 };
 
 const loadWalletWithBalances = () => async (dispatch) => {
     const walletList = new WalletList();
-    walletList.loadWalletsWithBalances().then(wallets => {
+    walletList.loadWalletsWithBalances().then((wallets) => {
         if (wallets instanceof ValidationError) {
             dispatch(errorActions.checkErrors(wallets));
             stopSplashLoader();
@@ -36,36 +36,40 @@ const loadWalletWithBalances = () => async (dispatch) => {
             type: types.SET_WALLETS,
             payload: wallets,
         });
-        usersActions.loadUserConfig().then(user_configs => {
-            let flag = false;
-            const { address, network } = user_configs?.lastWalletInfo
+        usersActions
+            .loadUserConfig()
+            .then((user_configs) => {
+                let flag = false;
+                const { address, network } = user_configs?.lastWalletInfo;
 
-            wallets?.forEach((item) => {
-                const hasInLastWalletInfo = item.address.toLowerCase() === address.toLowerCase()
-                    && item.network === network;
+                wallets?.forEach((item) => {
+                    const hasInLastWalletInfo =
+                        item.address.toLowerCase() === address.toLowerCase() &&
+                        item.network === network;
 
-                if (hasInLastWalletInfo) {
-                    flag = true;
-                    setTimeout(() => {
-                        dispatch({
-                            type: types.SET_ACTIVE_WALLET,
-                            payload: item,
-                        });
-                    }, 1000);
-                }    
-            });
-            if (!flag) {
+                    if (hasInLastWalletInfo) {
+                        flag = true;
+                        setTimeout(() => {
+                            dispatch({
+                                type: types.SET_ACTIVE_WALLET,
+                                payload: item,
+                            });
+                        }, 1000);
+                    }
+                });
+                if (!flag) {
+                    dispatch(setActiveWallet(wallets[0]));
+                }
+                setTimeout(() => {
+                    stopSplashLoader();
+                }, 1000);
+            })
+            .catch(() => {
                 dispatch(setActiveWallet(wallets[0]));
-            }
-            setTimeout(() => {
-                stopSplashLoader();
-            }, 1000);
-        }).catch(() => {
-            dispatch(setActiveWallet(wallets[0]));
-            setTimeout(() => {
-                stopSplashLoader();
-            }, 1000);
-        });
+                setTimeout(() => {
+                    stopSplashLoader();
+                }, 1000);
+            });
     });
 };
 
@@ -84,36 +88,38 @@ const loadNetworks = () => async (dispatch) => {
             type: types.SET_STAKE_NODES,
             payload: nodes.data,
         });
-    } catch {
-    }
+    } catch {}
 };
 
 const preparePermissionTransfer = async (address, status, minAmount) => {
     const wallet = getWalletConstructor(address);
-    let d = new Date();
-    let year = d.getFullYear();
-    let month = d.getMonth();
-    let day = d.getDate();
-    let expiryDate = new Date(year + 2, month, day);
-    let data = {
-        status, expiryDate: expiryDate.toISOString(),
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = d.getMonth();
+    const day = d.getDate();
+    const expiryDate = new Date(year + 2, month, day);
+    const data = {
+        status,
+        expiryDate: expiryDate.toISOString(),
     };
     if (+minAmount > 0) {
         data.minAmount = +minAmount;
     }
     const transaction = await wallet.setPermissionRestake(data);
-    wallet.prepareTransfer(transaction.data).then((res) => {
-        if (res.ok) {
-            return store.dispatch({
-                type: types.SET_PREPARE_TRANSFER_RESPONSE,
-                payload: { transaction: transaction.data, wallet },
-            });
-        } else {
+    wallet
+        .prepareTransfer(transaction.data)
+        .then((res) => {
+            if (res.ok) {
+                return store.dispatch({
+                    type: types.SET_PREPARE_TRANSFER_RESPONSE,
+                    payload: { transaction: transaction.data, wallet },
+                });
+            }
             store.dispatch(errorActions.checkErrors(res.data));
-        }
-    }).catch((err) => {
-        store.dispatch(errorActions.checkErrors(err));
-    });
+        })
+        .catch((err) => {
+            store.dispatch(errorActions.checkErrors(err));
+        });
 };
 
 const stopSplashLoader = () => {
@@ -137,52 +143,53 @@ const setActiveWallet = (wallet) => (dispatch) => {
     usersActions.setUserConfig(config);
 };
 
+const updateWalletList = async (wallet) => {
+    let { wallets, activeWallet, networks } = store.getState().wallet;
+    const metaMaskWallet =
+        wallets && wallets.find((elem) => elem.from === 'metamask');
+    if (metaMaskWallet) {
+        let updateActiveWallet = false;
+        if (metaMaskWallet.network === wallet.net && wallet.address) {
+            if (metaMaskWallet.address === activeWallet.address) {
+                updateActiveWallet = true;
+            }
+            metaMaskWallet.address = wallet.address;
+            const walletInstance = getWalletConstructor(metaMaskWallet);
+            const response = await walletInstance.getWalletBalance();
+            metaMaskWallet.balance = response.data.mainBalance;
+            if (updateActiveWallet) {
+                store.dispatch(setActiveWallet(metaMaskWallet));
+            }
+        } else {
+            wallets = wallets.filter((elem) => elem.from !== 'metamask');
+            if (wallets.length === 0) {
+                store.dispatch(setActiveWallet(null));
+                store.dispatch(errorActions.checkErrors(new ValidationError()));
+            }
+        }
+    } else {
+        const walletList = new WalletList();
+        wallet.network = wallet.net;
+        wallet.name = networks[wallet?.net]?.name;
+        wallet.code = networks[wallet?.net]?.code;
+        wallet.decimals = networks[wallet?.net]?.decimals;
+        wallet.from = 'metamask';
+        wallet.getTxUrl = walletList.getTxUrl(wallet?.net);
+        const walletInstance = getWalletConstructor(wallet);
+        const response = await walletInstance.getWalletBalance();
+        wallet.balance = response.data.mainBalance;
 
-const updateWalletList = async(wallet) => {
-    let { wallets, activeWallet, networks } = store.getState().wallet
-    let metaMaskWallet = wallets && wallets.find(elem => elem.from === 'metamask')
-    if(metaMaskWallet){
-        let updateActiveWallet = false
-        if(metaMaskWallet.network === wallet.net && wallet.address){
-            if(metaMaskWallet.address === activeWallet.address){
-                updateActiveWallet = true
-            }
-            metaMaskWallet.address = wallet.address
-            const walletInstance = getWalletConstructor(metaMaskWallet)
-            const response = await walletInstance.getWalletBalance()
-            metaMaskWallet.balance = response.data.mainBalance
-            if(updateActiveWallet){
-                store.dispatch(setActiveWallet(metaMaskWallet))
-            }
-        }else{
-            wallets = wallets.filter(elem => elem.from !== 'metamask')
-            if(wallets.length === 0){
-                store.dispatch(setActiveWallet(null))
-                store.dispatch(errorActions.checkErrors(new ValidationError())) 
-            }
+        wallets = wallets.concat([wallet]);
+        if (!activeWallet) {
+            store.dispatch(setActiveWallet(wallet));
         }
-    }else{
-        const walletList = new WalletList()
-        wallet.network = wallet.net
-        wallet.name = networks[wallet?.net]?.name
-        wallet.code = networks[wallet?.net]?.code
-        wallet.decimals = networks[wallet?.net]?.decimals
-        wallet.from = 'metamask'
-        wallet.getTxUrl = walletList.getTxUrl(wallet?.net)
-        const walletInstance = getWalletConstructor(wallet)
-        const response = await walletInstance.getWalletBalance()
-        wallet.balance = response.data.mainBalance
-        wallets = wallets.concat([wallet])
-        if(!activeWallet){
-            store.dispatch(setActiveWallet(wallet))
-        }
-        store.dispatch(errorActions.clearErrors())
+        store.dispatch(errorActions.clearErrors());
     }
     store.dispatch({
         type: types.SET_WALLETS,
-        payload: wallets
-    })
-}
+        payload: wallets,
+    });
+};
 
 export const walletActions = {
     getWalletConstructor,

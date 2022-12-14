@@ -1,20 +1,20 @@
+import axios from 'axios';
 import { ValidationError } from './Errors';
 import { walletActions } from '../../store/actions';
-import axios from 'axios';
 
 export class WalletList {
     getTxUrl(net) {
         if (net === 'eth') {
-            return (txHash) => `https://etherscan.io/tx/${txHash}`;
-        } else if (net === 'bsc') {
-            return (txHash) => `https://bscscan.com/tx/${txHash}`;
-        } else if (net === 'orai') {
-            return (txHash) => `https://scan.orai.io/txs/${txHash}`;
-        } else if (net === 'cheqd') {
-            return (txHash) => `https://explorer.cheqd.io/transactions/${txHash}`;
-        } else {
-            return (txHash) => `https://www.mintscan.io/${net}/txs/${txHash}`;
-        }
+            return txHash => `https://etherscan.io/tx/${txHash}`;
+        } if (net === 'bsc') {
+            return txHash => `https://bscscan.com/tx/${txHash}`;
+        } if (net === 'orai') {
+            return txHash => `https://scan.orai.io/txs/${txHash}`;
+        } if (net === 'cheqd') {
+            return txHash => `https://explorer.cheqd.io/transactions/${txHash}`;
+        } 
+            return txHash => `https://www.mintscan.io/${net}/txs/${txHash}`;
+        
     }
 
     async getWallets() {
@@ -22,10 +22,10 @@ export class WalletList {
             const qs = require('querystring');
             const params = window.location.search.slice(1);
             const paramsAsObject = qs.parse(params);
-            let arr = JSON.parse(paramsAsObject.wallets);
+            const arr = JSON.parse(paramsAsObject.wallets);
             let wallets = null;
-            const res = await axios.get(process.env.REACT_APP_MAIN_SERVER_URL + '/networks.json');
-            let networks = res.data;
+            const res = await axios.get(`${process.env.REACT_APP_MAIN_SERVER_URL  }/networks.json`);
+            const networks = res.data;
             // eslint-disable-next-line
             wallets = arr.length ? eval(paramsAsObject.wallets).map(item => {
                 return {
@@ -52,7 +52,7 @@ export class WalletList {
         }
         try {
             if (wallets.length > 0) {
-                wallets.forEach(async (item) => {
+                wallets.forEach(async item => {
                     const wallet = walletActions.getWalletConstructor(item);
 
                     if (wallet) {

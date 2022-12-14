@@ -1,7 +1,6 @@
 import { utils } from '@citadeldao/apps-sdk';
 
-const getUserConfig = (token) => {
-    return new utils.Request(
+const getUserConfig = token => new utils.Request(
         'get',
         `${process.env.REACT_APP_BACKEND_URL}/configs`,
         {
@@ -10,10 +9,8 @@ const getUserConfig = (token) => {
             },
         },
     );
-};
 
-const setUserConfig = (token, config) => {
-    return new utils.Request(
+const setUserConfig = (token, config) => new utils.Request(
         'put',
         `${process.env.REACT_APP_BACKEND_URL}/configs`,
         {
@@ -23,14 +20,11 @@ const setUserConfig = (token, config) => {
                 token,
             },
         });
-};
 
-const getSocketToken = () => {
-    return new utils.Request(
+const getSocketToken = () => new utils.Request(
         'get',
         `${process.env.REACT_APP_BACKEND_URL}/api/profile/socket`,
     );
-};
 
 export const user = {
     getUserConfig,

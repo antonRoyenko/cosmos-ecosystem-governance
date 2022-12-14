@@ -1,9 +1,9 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import MainView from './MainView';
 import { Provider, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import MainView from './MainView';
 import { store } from './store/store';
 import { walletActions } from './store/actions';
-import { useEffect } from 'react';
 import { SocketManager } from './networking/socket';
 
 
@@ -15,13 +15,13 @@ function App() {
         // eslint-disable-next-line
     }, []);
     return (
-        <Provider store={store}>
-            <HashRouter>
-                <Routes>
-                    <Route path="/*" element={<MainView/>}/>
-                </Routes>
-            </HashRouter>
-        </Provider>
+      <Provider store={store}>
+        <HashRouter>
+          <Routes>
+            <Route path="/*" element={<MainView />} />
+          </Routes>
+        </HashRouter>
+      </Provider>
     );
 }
 

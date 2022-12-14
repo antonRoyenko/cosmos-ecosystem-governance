@@ -9,46 +9,50 @@ import BigNumber from "bignumber.js";
 import '../../assets/styles/panels/transactions.css';
 import { useNavigate } from 'react-router-dom';
 import { fotmatAddress } from '../../helpers/addressFormatter'
-const TransactionDetails = (props) => {
+
+
+function TransactionDetails(props) {
   const config = new Config()
   const { activeWallet } = useSelector(state => state.wallet)
   const data = useSelector(state => state.transaction.openedTransaction)
   const navigate = useNavigate()
   const back = () => navigate(ROUTES.TRANSACTIONS)
   const [windowDimensions, setWindowDimensions] = useState(window.innerWidth);
-  useEffect(() => { 
+  useEffect(() => {
     function handleResize() {
         const { innerWidth: width } = window;
         setWindowDimensions(width);
     }
     window.addEventListener('resize', handleResize);
     return () => { window.removeEventListener('resize', handleResize) };
-        // eslint-disable-next-line 
+        // eslint-disable-next-line
     },[])
   return (
     <div className="panel">
       <Content>
-        <Header config={config} border style={{margin: "8px 0 24px 0"}} title={text.TRANSACTIONS_DETAILS} onClick={() => back()} back={true} />
+        <Header config={config} border style={{margin: "8px 0 24px 0"}} title={text.TRANSACTIONS_DETAILS} onClick={() => back()} back />
         <InfoCardBlock className='transactions-details-block'>
-          {data.to?.value && 
+          {data.to?.value &&
           <InfoCardItem text='Address'>
             <span className="transaction-address">{windowDimensions < 600 ? fotmatAddress(data.to?.value): data?.to?.value }</span>
           </InfoCardItem> }
           <InfoCardItem text='Amount'>
             <span className="transactions-amount">
-              {BigNumber(data.amount?.value?.amount).toFixed()}{" "}
+              {BigNumber(data.amount?.value?.amount).toFixed()}
+              {" "}
               <span className="transaction-ticker">{data.amount?.value?.ticker}</span>
             </span>
           </InfoCardItem>
           <InfoCardItem text='Fee'>
             <span className="transactions-details-fee">
-              {data.fee?.value?.amount || 0}{" "}
+              {data.fee?.value?.amount || 0}
+              {" "}
               <span className="transaction-ticker">
                 {data.fee?.value?.ticker || activeWallet.symbol}
               </span>
             </span>
           </InfoCardItem>
-        <InfoCardItem text='Status'>
+          <InfoCardItem text='Status'>
             <span
               className={
                 data.status?.value === "Success"
@@ -66,7 +70,10 @@ const TransactionDetails = (props) => {
           {data?.meta_info?.length && data?.meta_info?.map((item, i) => (
             <InfoCardItem text={item?.title} key={i}>
               <div className="row">
-                <span>{item?.value?.text || item?.value} </span>
+                <span>
+                  {item?.value?.text || item?.value}
+                  {' '}
+                </span>
                 {item?.value?.url ? (
                   <a
                     href={item?.value?.url}
@@ -74,7 +81,7 @@ const TransactionDetails = (props) => {
                     style={{ cursor: "pointer" }}
                     rel="noreferrer"
                   >
-                     <Icon name='arrow-from-square-up-right' color='#0091A6' width='16px'/>
+                    <Icon name='arrow-from-square-up-right' color='#0091A6' width='16px' />
                   </a>
                 ) : (
                   ""
@@ -83,12 +90,15 @@ const TransactionDetails = (props) => {
             </InfoCardItem>
           ))}
           <InfoCardItem text={text.VIEW_TRANSACTION}>
-            <a href={activeWallet.getTxUrl(data?.hash?.value)} className='transaction-link' target='_blank' rel="noreferrer"> <Icon name='arrow-from-square-up-right' color='#0091A6' width='16px'/></a>
+            <a href={activeWallet.getTxUrl(data?.hash?.value)} className='transaction-link' target='_blank' rel="noreferrer">
+              {' '}
+              <Icon name='arrow-from-square-up-right' color='#0091A6' width='16px' />
+            </a>
           </InfoCardItem>
         </InfoCardBlock>
       </Content>
     </div>
   );
-};
+}
 
 export default TransactionDetails

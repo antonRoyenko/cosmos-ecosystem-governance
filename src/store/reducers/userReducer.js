@@ -1,5 +1,7 @@
 import { types } from '../actions/types';
+
 const qs = require('querystring');
+
 const params = window.location.search.slice(1);
 const paramsAsObject = qs.parse(params);
 
