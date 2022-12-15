@@ -8,7 +8,7 @@ import { store } from '../store';
 import models from '../../networking/models';
 import Wallet from '../../networking/models/Wallet';
 
-const getWalletConstructor = (address) => {
+const getWalletConstructor = address => {
     try {
         const { activeWallet } = store.getState().wallet;
         const currentWallet = address || activeWallet;
@@ -20,13 +20,13 @@ const getWalletConstructor = (address) => {
 
         return new Wallet(currentWallet);
     } catch {
-        new Error("Wallet doesn't exists ");
+        throw new Error("Wallet doesn't exists ");
     }
 };
 
-const loadWalletWithBalances = () => async (dispatch) => {
+const loadWalletWithBalances = () => async dispatch => {
     const walletList = new WalletList();
-    walletList.loadWalletsWithBalances().then((wallets) => {
+    walletList.loadWalletsWithBalances().then(wallets => {
         if (wallets instanceof ValidationError) {
             dispatch(errorActions.checkErrors(wallets));
             stopSplashLoader();
@@ -38,11 +38,12 @@ const loadWalletWithBalances = () => async (dispatch) => {
         });
         usersActions
             .loadUserConfig()
-            .then((user_configs) => {
+            .then(userConfigs => {
                 let flag = false;
-                const { address, network } = user_configs?.lastWalletInfo;
+                const { address, network } = userConfigs?.lastWalletInfo;
 
-                wallets?.forEach((item) => {
+                // eslint-disable-next-line no-unused-expressions
+                wallets?.forEach(item => {
                     const hasInLastWalletInfo =
                         item.address.toLowerCase() === address.toLowerCase() &&
                         item.network === network;
@@ -73,7 +74,7 @@ const loadWalletWithBalances = () => async (dispatch) => {
     });
 };
 
-const loadNetworks = () => async (dispatch) => {
+const loadNetworks = () => async dispatch => {
     try {
         const restakeRequest = getRequest('restake').getNetworks();
         const rm = new utils.RequestManager();
@@ -88,7 +89,9 @@ const loadNetworks = () => async (dispatch) => {
             type: types.SET_STAKE_NODES,
             payload: nodes.data,
         });
-    } catch {}
+    } catch(err) {
+        console.warn(err);
+    }
 };
 
 const preparePermissionTransfer = async (address, status, minAmount) => {
@@ -108,7 +111,7 @@ const preparePermissionTransfer = async (address, status, minAmount) => {
     const transaction = await wallet.setPermissionRestake(data);
     wallet
         .prepareTransfer(transaction.data)
-        .then((res) => {
+        .then(res => {
             if (res.ok) {
                 return store.dispatch({
                     type: types.SET_PREPARE_TRANSFER_RESPONSE,
@@ -117,7 +120,7 @@ const preparePermissionTransfer = async (address, status, minAmount) => {
             }
             store.dispatch(errorActions.checkErrors(res.data));
         })
-        .catch((err) => {
+        .catch(err => {
             store.dispatch(errorActions.checkErrors(err));
         });
 };
@@ -129,7 +132,7 @@ const stopSplashLoader = () => {
     }, 3000);
 };
 
-const setActiveWallet = (wallet) => (dispatch) => {
+const setActiveWallet = wallet => dispatch => {
     dispatch({
         type: types.SET_ACTIVE_WALLET,
         payload: wallet,
@@ -143,10 +146,11 @@ const setActiveWallet = (wallet) => (dispatch) => {
     usersActions.setUserConfig(config);
 };
 
-const updateWalletList = async (wallet) => {
+const updateWalletList = async wallet => {
+    // eslint-disable-next-line prefer-const
     let { wallets, activeWallet, networks } = store.getState().wallet;
     const metaMaskWallet =
-        wallets && wallets.find((elem) => elem.from === 'metamask');
+        wallets && wallets.find(elem => elem.from === 'metamask');
     if (metaMaskWallet) {
         let updateActiveWallet = false;
         if (metaMaskWallet.network === wallet.net && wallet.address) {
@@ -161,7 +165,7 @@ const updateWalletList = async (wallet) => {
                 store.dispatch(setActiveWallet(metaMaskWallet));
             }
         } else {
-            wallets = wallets.filter((elem) => elem.from !== 'metamask');
+            wallets = wallets.filter(elem => elem.from !== 'metamask');
             if (wallets.length === 0) {
                 store.dispatch(setActiveWallet(null));
                 store.dispatch(errorActions.checkErrors(new ValidationError()));

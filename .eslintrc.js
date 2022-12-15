@@ -21,13 +21,11 @@ module.exports = {
         'plugin:react/recommended',
         'prettier',
     ],
-    plugins: ['react', 'react-hooks'],
+    plugins: ['react', 'react-hooks', 'simple-import-sort'],
     rules: {
         // JS common rules
-        'no-param-reassign': [
-            'error',
-            { props: true, ignorePropertyModificationsFor: ['draft', 'acc'] },
-        ],
+        'no-param-reassign': 1,
+        'consistent-return': 1,
 
         'global-require': 0,
         'arrow-parens': ['error', 'as-needed'],
@@ -92,6 +90,9 @@ module.exports = {
             },
         ],
         'react/jsx-pascal-case': 1,
+        'react/jsx-uses-react': "off",
+        'react/react-in-jsx-scope': "off",
+        'react/prop-types': "off",
 
         // React hooks rules
         'react-hooks/rules-of-hooks': 'error',

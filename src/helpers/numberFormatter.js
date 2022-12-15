@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js';
 const cutNumber = (number, digits = 0) =>
     Math.floor(
         BigNumber(number)
-        .multipliedBy(10 ** digits)
-        .toNumber(),
+            .multipliedBy(10 ** digits)
+            .toNumber(),
     ) /
     10 ** digits;
 
@@ -32,43 +32,43 @@ export const prettyNumber = value => {
     return `${prefix}${cutNumber(absoluteValue, maxDecimals)}`;
 };
 
-export const formatByDecimals = (num,decimal=6) => {
-  if(+num > 0){
-    const arr = num.toString().split('.')
-    if(arr.length > 1){
-      const drob = arr[1].substr(0,decimal)
-      if(decimal===0){
-        return arr[0]
-      }
-      return `${arr[0]}.${drob}`
+export const formatByDecimals = (num, decimal = 6) => {
+    if (+num > 0) {
+        const arr = num.toString().split('.');
+        if (arr.length > 1) {
+            const drob = arr[1].substr(0, decimal);
+            if (decimal === 0) {
+                return arr[0];
+            }
+            return `${arr[0]}.${drob}`;
+        }
     }
-  }
-  return num
-}
-
+    return num;
+};
 
 export function formatNumber(num, size = 10) {
-  const lookup = [
-    { value: 1, symbol: "" },
-    { value: 1e3, symbol: "k" },
-    { value: 1e6, symbol: "M" },
-    { value: 1e9, symbol: "G" },
-    { value: 1e12, symbol: "T" },
-    { value: 1e15, symbol: "P" },
-    { value: 1e18, symbol: "E" },
-  ];
-  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-  const item = lookup.slice().reverse().find(function(item) {
-    return num >= item.value;
-  });
-  if(item){
-    num /= item.value
-  }
-  if(num.toString().includes('.')){
-    const arr = num.toString().split('.')
-    if(arr[0].length <= size){
-      size -= arr[0].length
+    const lookup = [
+        { value: 1, symbol: '' },
+        { value: 1e3, symbol: 'k' },
+        { value: 1e6, symbol: 'M' },
+        { value: 1e9, symbol: 'G' },
+        { value: 1e12, symbol: 'T' },
+        { value: 1e15, symbol: 'P' },
+        { value: 1e18, symbol: 'E' },
+    ];
+    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+    const item = lookup
+        .slice()
+        .reverse()
+        .find(curr => num >= curr.value);
+    if (item) {
+        num /= item.value;
     }
-  }
-  return item ? num.toFixed(size).replace(rx, "$1") + item.symbol : "0";
+    if (num.toString().includes('.')) {
+        const arr = num.toString().split('.');
+        if (arr[0].length <= size) {
+            size -= arr[0].length;
+        }
+    }
+    return item ? num.toFixed(size).replace(rx, '$1') + item.symbol : '0';
 }

@@ -19,13 +19,15 @@ const loadSocketToken = () => dispatch => {
                 payload: res.data?.data,
             });
         });
-    } catch {}
+    } catch(err) {
+        console.warn(err);
+    }
 };
 
 const loadUserConfig = async () => {
-    const { auth_token } = store.getState().user;
+    const { auth_token: authToken } = store.getState().user;
     try {
-        const result = await requestManager.send(userRequest.getUserConfig(auth_token));
+        const result = await requestManager.send(userRequest.getUserConfig(authToken));
         console.log(result, '-loadUserConfig');
         store.dispatch({
             type: types.SET_USER_CONFIG,
@@ -38,12 +40,14 @@ const loadUserConfig = async () => {
 };
 
 const setUserConfig = (config = null) => {
-    const { auth_token } = store.getState().user;
+    const { auth_token: authToken } = store.getState().user;
     const data = { data: { config } };
 
     try {
-        requestManager.send(userRequest.setUserConfig(auth_token, data));
-    } catch {}
+        requestManager.send(userRequest.setUserConfig(authToken, data));
+    } catch(err) {
+        console.warn(err);
+    }
 };
 
 export const usersActions = {

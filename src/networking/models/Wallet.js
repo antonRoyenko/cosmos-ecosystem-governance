@@ -19,13 +19,13 @@ export default class Wallet {
     }
 
     async prepareTransfer(params) {
-        const { auth_token } = store.getState().user;
+        const { auth_token: authToken } = store.getState().user;
 
         try {
             const data = await requestManager.send(walletRequest.prepareBaseTransfer({
                 network: this.net,
                 from: this.address,
-                transaction: { ...params, token: auth_token, publicKey: this.publicKey },
+                transaction: { ...params, token: authToken, publicKey: this.publicKey },
             }));
 
             if (data.ok) {
@@ -39,9 +39,9 @@ export default class Wallet {
     }
 
     async getTransactions() {
-        const { auth_token } = store.getState().user;
+        const { auth_token: authToken } = store.getState().user;
         const params = {
-            auth_token,
+            authToken,
             address: this.address,
             net: this.net,
         };
@@ -57,18 +57,19 @@ export default class Wallet {
         }
     }
 
+    // eslint-disable-next-line class-methods-use-this
     prepareClaimRewards() {
         return new ImplementationError('Method not implemented!');
     }
 
     async getWalletBalance() {
-        const { auth_token } = store.getState().user;
+        const { auth_token: authToken } = store.getState().user;
 
         try {
             const data = await requestManager.send(walletRequest.getWalletBalance({
                 network: this.net,
                 address: this.address,
-                token: auth_token,
+                token: authToken,
             }));
             if (data?.ok) {
                 return data;

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './assets/styles/panels/index.css';
-import { useLocation , useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     StatusPopup,
@@ -29,16 +29,17 @@ function MainView() {
     const dispatch = useDispatch();
     const showModal = useSelector(state => state.errors.openErrorModal);
     const { validationErrors, errors } = useSelector(state => state.errors);
-    const { borderRadius } = useSelector(state => state.panels)
+    const { borderRadius } = useSelector(state => state.panels);
     const { activeWallet } = useSelector(state => state.wallet);
     const [showSuccess, setShowSuccess] = useState(errors);
     useEffect(() => {
         setShowSuccess(errors);
+        // eslint-disable-next-line no-console
         console.log(window.location.pathname);
         if (window.location.pathname.includes('/info/')) {
             navigate(window.location.pathname);
         }
-        // eslint-disable-next-line 
+        // eslint-disable-next-line
     }, [errors]);
     const clearErrors = () => {
         setShowSuccess(false);
@@ -48,41 +49,57 @@ function MainView() {
     let wallet = activeWallet;
 
     if (activeWallet) {
-      wallet = {...activeWallet,balance: prettyNumber(activeWallet?.balance)}
+        wallet = {
+            ...activeWallet,
+            balance: prettyNumber(activeWallet?.balance),
+        };
     }
-    const config = new Config()
-    
-    return(
+    const config = new Config();
+
+    return (
       <View>
-        <Panel config={config} style={{borderRadius: `${borderRadius}px`}}>
+        <Panel
+          config={config}
+          style={{ borderRadius: `${borderRadius}px` }}
+        >
           <AddressSectionCard
             onClick={() => navigate(ROUTES.SELECT_ADDRESS)}
-            className='select-address-card'
+            className="select-address-card"
             data={wallet}
             id="/show"
           />
           <PopupWindow show={showSuccess} id="/show">
-            <StatusPopup text={errors?.text} type="error" showPopup={clearErrors} />
+            <StatusPopup
+              text={errors?.text}
+              type="error"
+              showPopup={clearErrors}
+            />
           </PopupWindow>
           <AddressListPanel id={ROUTES.ADDRESS_LIST} />
           <TransactionsPanel id={ROUTES.TRANSACTIONS} />
           <GuidesPanel id={ROUTES.INFO_MENU_GUIDE} />
           <SelectAddressPanel id={ROUTES.SELECT_ADDRESS} />
           <TransactionsDetailsPanel id={ROUTES.TRANSACTION_DETAILS} />
-          <Modal id={ROUTES.ADDRESS_LIST} show={showModal && !location.pathname.includes('/info')}>
-            {validationErrors?.text && <div>
+          <Modal
+            id={ROUTES.ADDRESS_LIST}
+            show={showModal && !location.pathname.includes('/info')}
+          >
+            {validationErrors?.text && (
+            <div>
               <NotificationCard
                 text={text.ADDRESS_ERROR_HEADER}
                 iconColor="#00B2FE"
                 boldText
               />
-              <p className="description-text">{text.ADDRESS_ERROR_DESCRIPTION}</p>
+              <p className="description-text">
+                {text.ADDRESS_ERROR_DESCRIPTION}
+              </p>
               <TipCard text={text.ADDRESS_ERROR_TIP} />
-                                       </div>}
+            </div>
+                    )}
           </Modal>
         </Panel>
         <InfoPanel config={config} />
-           
       </View>
     );
 }

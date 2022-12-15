@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Content, Header, Tabbar, Input } from '@citadeldao/apps-ui-kit/dist/main';
 import AddressBlock from '@citadeldao/apps-ui-kit/dist/components/uiKit/AddressBlock'
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ function SelectAddressPanel() {
     const { wallets, activeWallet } = useSelector(state => state.wallet)
     const [walletList, setWalletList] = useState(wallets)
     const previousPanel = useSelector(state => state.panels.previousPanel)
-    const dispatch = useDispatch()  
+    const dispatch = useDispatch()
     const { bottomInset } = useSelector(state => state.panels)
     const navigate = useNavigate()
     const back = () => navigate(previousPanel)
@@ -36,7 +36,8 @@ function SelectAddressPanel() {
           <Header border title="Select an address" style={{margin: '8px 0 16px 0'}} onClick={() => back()} back />
           <Input type="search" style={{marginBottom: '10px'}} onChange={searchWallet} placeholder='Start typing..' />
           {walletList?.map((elem,i) =>(
-            <AddressBlock onClick={() => setActiveWallet(elem)} active={activeWallet?.address === elem?.address} style={{marginBottom: '10px'}} data={{...elem, balance: prettyNumber(elem?.balance)}} key={i} />  
+            // eslint-disable-next-line react/no-array-index-key
+            <AddressBlock onClick={() => setActiveWallet(elem)} active={activeWallet?.address === elem?.address} style={{marginBottom: '10px'}} data={{...elem, balance: prettyNumber(elem?.balance)}} key={i} />
                 ))}
         </Content>
         <Tabbar config={config} bottomInset={bottomInset} />

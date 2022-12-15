@@ -6,7 +6,6 @@ import { store } from './store/store';
 import { walletActions } from './store/actions';
 import { SocketManager } from './networking/socket';
 
-
 function App() {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -17,6 +16,7 @@ function App() {
     return (
       <Provider store={store}>
         <HashRouter>
+          {/* eslint-disable-next-line react/react-in-jsx-scope */}
           <Routes>
             <Route path="/*" element={<MainView />} />
           </Routes>

@@ -1,4 +1,3 @@
-import React from 'react';
 import './assets/styles/index.css';
 import { Provider } from 'react-redux';
 import Splash from '@citadeldao/apps-ui-kit/dist/components/uiKit/Splash';
@@ -35,6 +34,7 @@ const r = document.querySelector(':root');
 r.style.setProperty('--appThemeColor', config.tabbarParamsFromConfig('BACKGROUND_COLOR'));
 
 function listener(event) {
+    // eslint-disable-next-line no-console
     console.log('EVENT FROM FRONT', event.data);
     if(event.data?.from === 'metamask'){
       walletActions.updateWalletList(event.data)
@@ -42,7 +42,7 @@ function listener(event) {
   }
   
   if (window.addEventListener) {
+    // eslint-disable-next-line no-console
     console.log('subscribe front');
     window.addEventListener("message", listener,false);
   }
-  

@@ -7,13 +7,13 @@ export class SocketManager {
     static socket;
 
     static async connect() {
-        const { auth_token } = store.getState().user;
+        const { auth_token: authToken } = store.getState().user;
         try {
             this.socket = io(process.env.REACT_APP_SOCKET_URL, {
                 transports: ['websocket'],
                 upgrade: false,
                 query: {
-                    token: auth_token,
+                    token: authToken,
                 },
                 reconnection: true,
             });
@@ -58,7 +58,7 @@ export class SocketManager {
 						type: types.SET_WALLETS,
 						payload: wallets,
 					  });
-				}	
+				}
 			})
 			this.socket.on('mempool-add-tx-app', data => {
 				console.log('mempool-add-tx-app', data)

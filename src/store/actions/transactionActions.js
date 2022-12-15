@@ -1,5 +1,6 @@
 import { types } from './types';
-import { walletActions, errorActions } from '.';
+import { walletActions } from './walletActions';
+import { errorActions } from './errorsActions';
 import { store } from '../store';
 
 const setOpenedTransaction = flag => ({
@@ -16,21 +17,24 @@ const loadTransactions = () => async dispatch => {
         type: types.SET_TRANSACTIONS_LIST,
         payload: [],
     });
-    const {activeWallet} = store.getState().wallet;
+    const { activeWallet } = store.getState().wallet;
     if (activeWallet) {
         const wallet = walletActions.getWalletConstructor(activeWallet);
-        wallet.getTransactions().then(response => {
-            dispatch({
-                type: types.SET_TRANSACTIONS_LIST,
-                payload: response?.data?.list,
+        wallet
+            .getTransactions()
+            .then(response => {
+                dispatch({
+                    type: types.SET_TRANSACTIONS_LIST,
+                    payload: response?.data?.list,
+                });
+                dispatch({
+                    type: types.SET_TRANSACTIONS_LOADED,
+                    payload: true,
+                });
+            })
+            .catch(e => {
+                dispatch(errorActions.checkErrors(e));
             });
-            dispatch({
-                type: types.SET_TRANSACTIONS_LOADED,
-                payload: true,
-            });
-        }).catch(e => {
-            dispatch(errorActions.checkErrors(e));
-        });
     }
 };
 

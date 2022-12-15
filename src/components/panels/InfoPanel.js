@@ -1,4 +1,4 @@
-import React, {useState,useRef} from 'react'
+import {useState,useRef} from 'react'
 // eslint-disable-next-line
 import { Tablist, Header, Content, Tab} from '@citadeldao/apps-ui-kit/dist/main'
 import GuidesPanel from './GuidesPanel'

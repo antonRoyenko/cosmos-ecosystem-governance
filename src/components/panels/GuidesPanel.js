@@ -1,4 +1,3 @@
-import React from 'react'
 import { GuidesCard } from '@citadeldao/apps-ui-kit/dist/main'
 import text from '../../text.json'
 import '../../assets/styles/uiKit/guides.css'
