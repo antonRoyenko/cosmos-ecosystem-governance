@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 export class ValidationError extends Error {
     constructor(message) {
         super(message);

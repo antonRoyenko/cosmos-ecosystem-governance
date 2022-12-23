@@ -9,6 +9,7 @@ function InfoPanel(props) {
     const headerRef = useRef()
     return (
       <section className='info-panel'>
+        {/* eslint-disable-next-line react/destructuring-assignment */}
         <div className='panel-header-line' style={{background: props.config.headerParamsFromConfig('TOP_BACKGROUND_COLOR') }} />
         <Header refs={headerRef} />
         <Content>

@@ -1,7 +1,9 @@
 import { utils } from '@citadeldao/apps-sdk';
 import { types } from './types';
+// eslint-disable-next-line import/no-cycle
 import { WalletList } from '../../networking/models/WalletList';
 import { ValidationError } from '../../networking/models/Errors';
+// eslint-disable-next-line import/no-cycle
 import { errorActions, usersActions } from './index';
 import { getRequest } from '../../networking/requests/getRequest';
 import { store } from '../store';
@@ -40,7 +42,10 @@ const loadWalletWithBalances = () => async dispatch => {
             .loadUserConfig()
             .then(userConfigs => {
                 let flag = false;
-                const { address, network } = userConfigs?.lastWalletInfo;
+                const { address, network } = userConfigs.lastWalletInfo || {
+                    address: '',
+                    network: '',
+                };
 
                 // eslint-disable-next-line no-unused-expressions
                 wallets?.forEach(item => {
@@ -89,7 +94,7 @@ const loadNetworks = () => async dispatch => {
             type: types.SET_STAKE_NODES,
             payload: nodes.data,
         });
-    } catch(err) {
+    } catch (err) {
         console.warn(err);
     }
 };

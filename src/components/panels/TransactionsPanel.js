@@ -39,6 +39,7 @@ function TransactionsPanel() {
                         // eslint-disable-next-line react/no-array-index-key
                       <TransactionItem
                         data={item}
+                        // eslint-disable-next-line react/no-array-index-key
                         key={i}
                         onClick={setOpenedTransaction}
                       />

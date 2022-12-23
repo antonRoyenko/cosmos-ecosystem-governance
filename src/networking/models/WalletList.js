@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ValidationError } from './Errors';
+// eslint-disable-next-line import/no-cycle
 import { walletActions } from '../../store/actions';
 
 export class WalletList {
@@ -34,7 +35,8 @@ export class WalletList {
             const networks = res.data;
             // eslint-disable-next-line
             wallets = arr.length
-                ? eval(paramsAsObject.wallets).map(item => ({
+                ? // eslint-disable-next-line no-eval
+                  eval(paramsAsObject.wallets).map(item => ({
                       address: item?.address,
                       network: item?.net,
                       name: networks[item?.net]?.name,

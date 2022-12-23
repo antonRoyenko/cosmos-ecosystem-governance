@@ -1,4 +1,5 @@
 import { types } from './types';
+// eslint-disable-next-line import/no-cycle
 import { walletActions } from './walletActions';
 import { errorActions } from './errorsActions';
 import { store } from '../store';
