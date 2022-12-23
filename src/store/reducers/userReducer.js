@@ -11,7 +11,7 @@ const initialState = {
     user_configs: 'null',
 };
 
-export default function UserReducer(state = initialState, action) {
+export default function UserReducer(state = initialState, action = {}) {
     switch (action.type) {
         case types.SET_SOCKET_TOKEN:
             return {

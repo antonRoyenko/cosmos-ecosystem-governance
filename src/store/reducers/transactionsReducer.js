@@ -5,7 +5,8 @@ const initialState = {
     transactions: [],
     transactionsLoaded: false,
 };
-export default function TransactionsReducer(state = initialState, action) {
+
+export default function TransactionsReducer(state = initialState, action = {}) {
     switch (action.type) {
         case types.SET_OPENED_TRANSACTION:
             return {

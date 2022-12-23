@@ -10,7 +10,7 @@ const initialState = {
     showSplash: true,
 };
 
-export default function WalletReducer(state = initialState, action) {
+export default function WalletReducer(state = initialState, action = {}) {
     switch (action.type) {
         case types.SET_WALLETS:
             return {
