@@ -20,7 +20,7 @@ import TransactionsDetailsPanel from './components/panels/TransactionDetails';
 import { errorActions } from './store/actions';
 import text from './text.json';
 import InfoPanel from './components/panels/InfoPanel';
-import { Config } from './config/config';
+import { Config } from './config';
 import SelectAddressPanel from './components/panels/SelectAddressPanel';
 import { prettyNumber } from './helpers/numberFormatter';
 

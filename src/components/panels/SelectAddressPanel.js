@@ -3,7 +3,7 @@ import { Content, Header, Tabbar, Input } from '@citadeldao/apps-ui-kit/dist/mai
 import AddressBlock from '@citadeldao/apps-ui-kit/dist/components/uiKit/AddressBlock'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Config } from '../../config/config';
+import { Config } from '../../config';
 import { walletActions } from '../../store/actions';
 import { prettyNumber } from '../../helpers/numberFormatter';
 

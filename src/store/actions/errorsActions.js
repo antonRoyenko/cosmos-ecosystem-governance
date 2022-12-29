@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react';
+import { createAction } from '@reduxjs/toolkit'
 import { types } from './types';
 import text from '../../text.json';
 import { ValidationError } from '../../networking/models/Errors';
@@ -120,6 +120,13 @@ const errorList = [
     },
 ];
 
+export const setErrors = createAction(types.SET_ERRORS);
+export const setErrorModal = createAction(types.SET_ERROR_MODAL);
+export const setNetworkErrors = createAction(types.SET_NETWORK_ERRORS);
+export const setArgumentsErrors = createAction(types.SET_ARGUMENTS_ERRORS);
+export const setValidationErrors = createAction(types.SET_VALIDATION_ERRORS);
+export const setImplementationErrors = createAction(types.SET_IMPLEMENTATION_ERRORS);
+
 const clearErrors = () => dispatch => {
     dispatch({
         type: types.SET_ERROR_MODAL,
@@ -178,7 +185,6 @@ const checkErrors = error => dispatch => {
             }
         }
         dispatch(setCustomErrors({ text: errorText }));
-        Sentry.captureException(error?.message || error);
     }
 };
 

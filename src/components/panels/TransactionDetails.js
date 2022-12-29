@@ -12,7 +12,7 @@ import BigNumber from 'bignumber.js';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes';
 import text from '../../text.json';
-import { Config } from '../../config/config';
+import { Config } from '../../config';
 import '../../assets/styles/panels/transactions.css';
 import { fotmatAddress } from '../../helpers/addressFormatter';
 

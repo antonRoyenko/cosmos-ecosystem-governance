@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react';
 import { utils } from '@citadeldao/apps-sdk';
 import { getRequest } from '../requests/getRequest';
 import { ImplementationError } from './Errors';
@@ -32,8 +31,6 @@ export default class Wallet {
                 return data;
             }
         } catch (e) {
-            Sentry.captureException(e.response?.data?.error);
-
             return new Error(e.response?.data?.error);
         }
     }
@@ -52,7 +49,6 @@ export default class Wallet {
                 return data;
             }
         } catch (e) {
-            Sentry.captureException(e.response?.data?.error);
             return new Error(e.response?.data?.error);
         }
     }

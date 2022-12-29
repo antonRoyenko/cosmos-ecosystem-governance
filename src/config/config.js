@@ -1,8 +1,12 @@
 import defaultConfig from './default-config.json'
 import customConfig from './custom-config.json'
 
-export class Config {
-    // eslint-disable-next-line class-methods-use-this
+export default class Config {
+    constructor() {
+        this.defaultConfig = defaultConfig;
+        this.customConfig = customConfig;
+    }
+
     tabbarParamsFromConfig(param){
         if (customConfig.TABBAR[param]){
             return customConfig.TABBAR[param]
@@ -10,10 +14,9 @@ export class Config {
             // eslint-disable-next-line no-console
             console.warn(`Provide custom TABBAR ${  param}`)
         
-        return defaultConfig.TABBAR[param]
+        return this.defaultConfig.TABBAR[param];
     }
 
-    // eslint-disable-next-line class-methods-use-this
     headerParamsFromConfig(param){
         if (customConfig.HEADER[param]){
             return customConfig.HEADER[param]
@@ -21,13 +24,12 @@ export class Config {
             // eslint-disable-next-line no-console
             console.warn(`Provide custom HEADER ${  param}`)
         
-        return defaultConfig.HEADER[param]
+        return this.defaultConfig.HEADER[param]
     }
 
-    // eslint-disable-next-line class-methods-use-this
     splashParamsFromConfig(){
         if (customConfig.SPLASH){
-            const config = { ...customConfig.SPLASH };
+            const config = { ...this.customConfig.SPLASH };
 
             if (config.background) {
                 // eslint-disable-next-line import/no-dynamic-require
@@ -44,10 +46,9 @@ export class Config {
             // eslint-disable-next-line no-console
             console.warn('Provide param "SPLASH" to custom config');
         
-        return defaultConfig.SPLASH
+        return this.defaultConfig.SPLASH
     }
 
-    // eslint-disable-next-line class-methods-use-this
     get showAddressBlock() {
         if (customConfig.DEFAULT_ADDRESS_BLOCK){
             return customConfig.DEFAULT_ADDRESS_BLOCK
@@ -55,6 +56,6 @@ export class Config {
             // eslint-disable-next-line no-console
             console.warn('Provide DEFAULT_ADDRESS_BLOCK!')
         
-        return defaultConfig.DEFAULT_ADDRESS_BLOCK
+        return this.defaultConfig.DEFAULT_ADDRESS_BLOCK
     }
 }

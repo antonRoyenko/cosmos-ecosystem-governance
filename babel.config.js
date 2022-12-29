@@ -2,16 +2,6 @@ module.exports = {
     env: {
         production: {
             plugins: [
-                [
-                    'babel-plugin-styled-components',
-                    {
-                        ssr: false,
-                        displayName: false,
-                        pure: true,
-                        minify: true,
-                        transpileTemplateLiterals: true,
-                    },
-                ],
                 'transform-react-remove-prop-types',
                 '@babel/plugin-transform-react-constant-elements',
                 '@babel/plugin-transform-react-inline-elements',
@@ -25,16 +15,6 @@ module.exports = {
         },
     },
     plugins: [
-        [
-            'babel-plugin-styled-components',
-            {
-                ssr: false,
-                displayName: true,
-                pure: true,
-                minify: false,
-                transpileTemplateLiterals: false,
-            },
-        ],
         '@babel/plugin-proposal-class-properties',
         '@babel/plugin-proposal-json-strings',
         '@babel/plugin-proposal-export-namespace-from',

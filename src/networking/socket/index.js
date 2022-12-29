@@ -4,7 +4,7 @@ import { types } from '../../store/actions/types';
 
 export class SocketManager {
     // contains a socket connection
-    static socket;
+    static socket
 
     static async connect() {
         const { auth_token: authToken } = store.getState().user;

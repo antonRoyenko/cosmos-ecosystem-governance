@@ -1,14 +1,15 @@
-import { combineReducers } from 'redux';
-import TransactionsReducer from './transactionsReducer';
-import UserReducer from './userReducer';
-import ErrorReducer from './errorsReducer';
-import WalletReducer from './walletReducer';
-import PanelReducer from './panelReducer';
+import { errorsReducer } from './errors';
+import { panelReducer } from './panel';
 
-export const state = combineReducers({
-    transaction: TransactionsReducer,
-    user: UserReducer,
-    errors: ErrorReducer,
-    wallet: WalletReducer,
-    panels: PanelReducer,
-});
+export const reducer = {
+    errors: errorsReducer,
+    panel: panelReducer,
+}
+
+// export const state = combineReducers({
+//     transaction: TransactionsReducer,
+//     user: UserReducer,
+//     errors: ErrorReducer,
+//     wallet: WalletReducer,
+//     panels: PanelReducer,
+// });

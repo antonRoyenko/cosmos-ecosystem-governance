@@ -1,12 +1,4 @@
+import { createAction } from '@reduxjs/toolkit'
 import { types } from './types';
 
-const setPreviousPanel = panel => dispatch => {
-    dispatch({
-        type: types.SET_PREVIOUS_PANEL,
-        payload: panel,
-    });
-};
-
-export const panelActions = {
-    setPreviousPanel,
-};
+export const setPreviousPanel = createAction(types.SET_PREVIOUS_PANEL);

@@ -8,7 +8,7 @@ import {
 } from '@citadeldao/apps-ui-kit/dist/main';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { Config } from '../../config/config';
+import { Config } from '../../config';
 import { panelActions } from '../../store/actions';
 import '../../assets/styles/panels/swap.css';
 

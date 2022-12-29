@@ -10,7 +10,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { transactionActions, panelActions } from '../../store/actions';
 import text from '../../text.json';
 import ROUTES from '../../routes';
-import { Config } from '../../config/config';
+import { Config } from '../../config';
 
 function TransactionsPanel() {
     const navigate = useNavigate();

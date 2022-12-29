@@ -1,10 +1,10 @@
-import { createStore, compose, applyMiddleware } from 'redux';
-import reduxThunk from 'redux-thunk';
-import { state } from './reducers';
+import { configureStore } from '@reduxjs/toolkit'
+import { reducer } from './reducers'
 
-export const store = createStore(
-    state,
-    compose(
-        applyMiddleware(reduxThunk),
-    ),
-);
+export const store = configureStore({
+	reducer,
+	devTools: process.env.NODE_ENV !== 'production',
+	// middleware: getDefaultMiddleware => getDefaultMiddleware()
+    //      .concat(() => {}),
+});
+

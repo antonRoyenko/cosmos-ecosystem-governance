@@ -3,7 +3,7 @@ import {useState,useRef} from 'react'
 import { Tablist, Header, Content, Tab} from '@citadeldao/apps-ui-kit/dist/main'
 import GuidesPanel from './GuidesPanel'
 
-function InfoPanel(props) {
+function InfoPanel() {
     // eslint-disable-next-line
     const [active, setActive] = useState('Guides')
     const headerRef = useRef()
