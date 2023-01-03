@@ -1,18 +1,18 @@
+import { useEffect } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-// import { useEffect } from 'react';
+import { Provider, useDispatch } from 'react-redux';
 import { MainView } from '../../containers/MainView';
 import { store } from '../../store/store';
-// import { walletActions } from '../../store/actions';
-// import { SocketManager } from '../../networking/socket';
+import { walletActions } from '../../store/slices';
+import { SocketManager } from '../../networking/socket';
 
 function App() {
-    // const dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(walletActions.loadWalletWithBalances());
-    //     SocketManager.connect();
-    //     // eslint-disable-next-line
-    // }, []);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(walletActions.trigger());
+        SocketManager.connect();
+    }, [dispatch]);
+    
     return (
       <Provider store={store}>
         <HashRouter>

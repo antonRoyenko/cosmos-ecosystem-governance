@@ -1,0 +1,1 @@
+export { walletMiddleware } from './wallet';

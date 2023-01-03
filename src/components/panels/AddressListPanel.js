@@ -9,7 +9,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Config } from '../../config';
-import { panelActions } from '../../store/actions';
+import { panelActions } from '../../store/slices';
 import '../../assets/styles/panels/swap.css';
 
 function AddressListPanel() {

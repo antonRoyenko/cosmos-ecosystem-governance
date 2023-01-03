@@ -9,7 +9,7 @@ const initialState = {
     showSplash: true,
 };
 
-const walletSlice = createSlice({
+const wallet = createSlice({
     name: 'wallets',
     initialState,
     reducers: {
@@ -23,5 +23,5 @@ const walletSlice = createSlice({
     },
 });
 
-export const { trigger } = walletSlice.actions;
-export default walletSlice.reducer;
+export const { trigger } = wallet.actions;
+export default wallet.reducer;

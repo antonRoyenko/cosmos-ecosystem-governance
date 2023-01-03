@@ -1,9 +1,9 @@
-import { errorsReducer } from './errors';
-import { panelReducer } from './panel';
+import { walletReducer, panelReducer, errorsReducer } from '../slices';
 
 export const reducer = {
     errors: errorsReducer,
     panel: panelReducer,
+    wallet: walletReducer,
 }
 
 // export const state = combineReducers({
