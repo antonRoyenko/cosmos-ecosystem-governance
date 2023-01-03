@@ -26,11 +26,8 @@ export class WalletList {
         try {
             const qs = require('querystring');
             const params = window.location.search.slice(1);
-            console.log(2, params);
             const paramsAsObject = qs.parse(params);
-            console.log(3, params);
             const arr = JSON.parse(paramsAsObject.wallets);
-            console.log(4, arr);
             let wallets = null;
             const res = await axios.get(
                 `${process.env.REACT_APP_MAIN_SERVER_URL}/networks.json`,
