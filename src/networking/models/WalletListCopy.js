@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { ValidationError } from './Errors';
-// eslint-disable-next-line import/no-cycle
 import { walletActions } from '../../store/actions';
 
 export class WalletList {

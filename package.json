@@ -6,6 +6,7 @@
   "dependencies": {
     "@citadeldao/apps-sdk": "^0.0.18",
     "@citadeldao/apps-ui-kit": "^0.500.0",
+    "@reduxjs/toolkit": "1.9.1",
     "axios": "^0.27.2",
     "bignumber.js": "9.1.1",
     "moment": "^2.29.3",
